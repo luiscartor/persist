@@ -12,6 +12,6 @@ test_that("smmd is invariant to area if using same set of coors", {
   expect_equal(smnnd(colonies1,colonies1,1), smnnd(colonies1,colonies1,100))
 })
 
-test_that("csp corresponds to averaged smnnd", {
-  expect_equal(csp(colonies1,colonies1,100), -smnnd(colonies1,colonies1,100))
+test_that("cspscaled is equal to 1 if colonies don't move", {
+  expect_equal(cspscaled(colonies1,colonies1), 1)
 })
