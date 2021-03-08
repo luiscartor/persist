@@ -130,6 +130,25 @@ csp <- function(xy1, xy2, area) {
 #' colonies2 <- matrix(sample(1:10,10),nrow=5,ncol=2)
 #' csf(colonies1,colonies2,100)
 #' @export
-cspscaled <- function(xy1, xy2, area) {
-  -(smnnd(xy1, xy2, area) + smnnd(xy2, xy1, area)) / 2
+cspscaled <- function(xy1, xy2) {
+  area <- (max(xy1[,1])-min(xy1[,1]))*(max(xy1[,2])-min(xy1[,2]))
+
+  # Calculates theorethical maximum csp
+  csp_max <- -smnnd(xy1,xy1,area)
+
+  # Calculates theorethical minimum csp
+  csp_min <- c()
+  for(i in 1:1000){
+         ran_cols <- c()
+         for (j in 1:nrow(xy1)){
+             ran_col <- c(sample(min(xy1[,1]):max(xy1[,1]),1),sample(min(xy1[,2]):max(xy1[,2]),1))
+             ran_cols <- rbind(ran_cols,ran_col)
+             colnames(ran_cols) <- colnames(xy1)
+           }
+         csp_min <- c(csp_min,csp(ran_cols,xy1,area))
+  }
+  csp_min <- mean(csp_min)
+
+  # Scaled csp
+  (csp(xy1,xy2,area)-csp_min)/(csp_max-csp_min)
 }
